@@ -111,8 +111,6 @@ public class JWTController implements Initializable {
                 "delete_user", "/users/"
         );
         config.put("endpoints", endpoints);
-        config.put("access_token", "");
-        config.put("refresh_token", "");
 
         File configFile = new File(CONFIG_FILE);
         if (configFile.exists()) {
@@ -120,8 +118,6 @@ public class JWTController implements Initializable {
                 String content = Files.readString(configFile.toPath());
                 Map<String, Object> loadedConfig = objectMapper.readValue(content, Map.class);
                 config.putAll(loadedConfig);
-                accessToken = (String) config.getOrDefault("access_token", "");
-                refreshToken = (String) config.getOrDefault("refresh_token", "");
             } catch (IOException e) {
                 logMessage("Error loading config file: " + e.getMessage());
             }
@@ -137,8 +133,6 @@ public class JWTController implements Initializable {
     private void saveConfig() {
         config.put("ip", ipField.getText());
         config.put("port", portField.getText());
-        config.put("access_token", accessToken);
-        config.put("refresh_token", refreshToken);
 
         try {
             String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
@@ -364,11 +358,6 @@ public class JWTController implements Initializable {
                         accessToken = jsonNode.get("access_token").asText();
                         refreshToken = jsonNode.get("refresh_token").asText();
 
-                        // Save tokens to config
-                        config.put("access_token", accessToken);
-                        config.put("refresh_token", refreshToken);
-                        saveConfig();
-
                         updateTokenLabels();
                         logMessage("Login exitoso");
                         logMessage("Access Token: " + maskToken(accessToken));
@@ -482,11 +471,6 @@ public class JWTController implements Initializable {
                         JsonNode jsonNode = objectMapper.readTree(responseBody);
                         accessToken = jsonNode.get("access_token").asText();
 
-                        // Update tokens in config
-                        config.put("access_token", accessToken);
-                        config.put("refresh_token", refreshToken);
-                        saveConfig();
-
                         updateTokenLabels();
                         logMessage("Token refrescado exitosamente");
                         logMessage("Nuevo Access Token: " + maskToken(accessToken).substring(0, Math.min(20, accessToken.length())) + "...");
@@ -556,9 +540,6 @@ public class JWTController implements Initializable {
                         // Clear tokens
                         accessToken = "";
                         refreshToken = "";
-                        config.put("access_token", "");
-                        config.put("refresh_token", "");
-                        saveConfig();
                         updateTokenLabels();
 
                         logMessage("Sesión cerrada exitosamente");
