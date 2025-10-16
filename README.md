@@ -20,8 +20,9 @@ graph TB
     A[JavaFX GUI] --> B[OkHttp Client]
     B --> C[Flask Microservice :5000]
     C --> D[(MariaDB :3306)]
-    C --> E[JWT Tokens]
-    A --> F[(JSON Config File)]
+    C --> E[(Redis :6379)]
+    C --> F[JWT Tokens]
+    A --> G[(JSON Config File)]
 ```
 
 ## Características de la GUI JavaFX
@@ -62,27 +63,26 @@ La aplicación JavaFX utiliza un enfoque moderno con FXML para la definición de
 ```mermaid
 stateDiagram-v2
     [*] --> Inicialización
-    Inicialización --> Configuración: Cargar config local
-    Configuración --> HealthCheck: Iniciar verificación automática
+    Inicialización --> HealthCheck: Verificación automática
     HealthCheck --> EsperandoInteracción: Semáforo actualizado
 
     EsperandoInteracción --> Registro: Click Registrar
     Registro --> EsperandoInteracción: Usuario registrado
 
     EsperandoInteracción --> Login: Click Login
-    Login --> Autenticado: Tokens guardados
+    Login --> Autenticado: Tokens JWT generados
 
     Autenticado --> Protegido: Click Acceder Protegido
-    Protegido --> Autenticado: Datos mostrados
+    Protegido --> Autenticado: Datos protegidos mostrados
 
     Autenticado --> Refresh: Click Refresh Token
-    Refresh --> Autenticado: Tokens actualizados
-
-    Autenticado --> Logout: Click Logout
-    Logout --> EsperandoInteracción: Tokens limpiados
+    Refresh --> Autenticado: Access token renovado
 
     Autenticado --> GestionUsuarios: Click Ver Usuarios
-    GestionUsuarios --> Autenticado: Lista actualizada
+    GestionUsuarios --> Autenticado: Lista de usuarios
+
+    Autenticado --> Logout: Click Logout
+    Logout --> EsperandoInteracción: Tokens revocados
 ```
 
 ## Prerrequisitos
