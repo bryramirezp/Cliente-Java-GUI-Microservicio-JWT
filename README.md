@@ -21,8 +21,7 @@ graph TB
     B --> C[Flask Microservice :5000]
     C --> D[(MariaDB :3306)]
     C --> E[(Redis :6379)]
-    C --> F[JWT Tokens]
-    A --> G[(JSON Config File)]
+    A --> F[(JSON Config File)]
 ```
 
 ## Características de la GUI JavaFX
@@ -229,13 +228,4 @@ cliente-jwt-gui/
 ├── jwt_gui_config.json
 └── README.md
 ```
-
-## Beneficios de JavaFX
-
-- **Rendimiento Superior**: Java nativo con excelente rendimiento
-- **Interfaz Moderna**: Componentes nativos del sistema operativo actual
-- **Arquitectura Profesional**: MVC clara con separación de responsabilidades
-- **Mantenibilidad**: Código Java tipado fuerte, mejor para equipos grandes
-- **Escalabilidad**: Fácil de extender con nuevas funcionalidades
-- **Threading Seguro**: Platform.runLater() para actualizaciones UI seguras
 
